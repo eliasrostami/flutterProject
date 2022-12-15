@@ -1,0 +1,18 @@
+{
+    "profileTitle": "papiloo!",
+    "name": "Elias Rostami",
+    "job": "Developer & Programer",
+    "location": "semnan, iran",
+    "summary": "a person or company that makes money from buying land, building new houses, offices, etc., or by changing existing buildings to sell or rent:",
+    "selectedLanguage": "Selected Language",
+    "enLanguage": "English",
+    "faLanguage":"فارسی",
+    "skills": "skills",
+    "personalInformation":"Personal Information",
+    "email": "Email",
+    "password": "password",
+    "save": "Save",
+    "mode": "Theme Mode ",
+    "darkMode":"Dark",
+    "lightMode":"Light"
+}
