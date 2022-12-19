@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
       theme: MyAppThemeConfig.light().getTheme(_locale.languageCode),
       // theme: themeMode == ThemeMode.dark? MyAppThemeConfig.dark().getTheme(_locale.languageCode):MyAppThemeConfig.light().getTheme(_locale.languageCode),
 
-      home:  Elias()
+      home:  MainScreen()
       // Stack(
       //   children: [
       //     Positioned.fill(child: HomeScreen()),
@@ -165,6 +165,18 @@ class MyAppThemeConfig{
     caption: const TextStyle(fontFamily: FontFamily.iranYekan),
     button: const TextStyle(fontFamily: FontFamily.iranYekan),
   );
+}
+
+class MainScreen extends StatelessWidget{
+
+  @override
+  Widget build(BuildContext context) {
+    
+    return Scaffold(
+      bottomNavigationBar: _BottomNavigation(),
+      body: HomeScreen(),
+    );
+  }
 }
 
 class HomePage extends StatefulWidget{
