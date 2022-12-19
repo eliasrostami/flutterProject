@@ -7,6 +7,7 @@ import 'package:flutter_application_train/article.dart';
 import 'package:flutter_application_train/auth.dart';
 import 'package:flutter_application_train/gen/fonts.gen.dart';
 import 'package:flutter_application_train/home.dart';
+import 'package:flutter_application_train/profile.dart';
 import 'package:flutter_application_train/splash.dart';
 import 'package:flutter_application_train/test.dart';
 import 'package:google_fonts/google_fonts.dart';

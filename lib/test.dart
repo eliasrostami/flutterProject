@@ -23,7 +23,7 @@ class Elias extends StatelessWidget{
     //   ],
     // );
 
-    return Article();
+    return Profile();
   }
 }
 
@@ -846,37 +846,79 @@ class Article extends StatelessWidget{
         ),
         
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            title: const Text('papiloo'),
-            actions: [
-              IconButton(onPressed: (() {
-                
-              }), icon: const Icon(CupertinoIcons.ellipsis_vertical)),
-              const SizedBox(width: 16,)
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                title: const Text('papiloo'),
+                actions: [
+                  IconButton(onPressed: (() {
+                    
+                  }), icon: const Icon(CupertinoIcons.ellipsis_vertical)),
+                  const SizedBox(width: 16,)
+                ],
+              ),
+              SliverList(delegate: SliverChildListDelegate([
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                  child: Text('Four Things Every Man Needs To Know',style: Theme.of(context).textTheme.headline4!.apply(color: Colors.black),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Assets.img.stories.story5.image(width: 48,height: 48,fit: BoxFit.cover)
+                      ),
+                      const SizedBox(width: 16,),
+                      Expanded(child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start  ,
+                        children: [
+                          Text('Elias Rostami',style: Theme.of(context).textTheme.bodyText1,),
+                          const SizedBox(height: 4,),
+                          Text('2m ago')
+                        ],
+                      )),
+                      IconButton(onPressed: (){}, icon:  Icon(CupertinoIcons.bookmark,color: Theme.of(context).colorScheme.primary,)),
+                      IconButton(onPressed: (){}, icon:  Icon(CupertinoIcons.share,color: Theme.of(context).colorScheme.primary,)),
+                    ],
+                  ),
+                ),
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32)
+                  ),
+                  child: Assets.img.posts.large.largePost4.image()
+                ),
+                Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 32, 32, 16),
+                        child: Text('Four Things Every Woman Needs To Know',style: Theme.of(context).textTheme.headline5,),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(32, 0, 32, 32),
+                        child: Text('Thank you for using Googles APIs, other developer services, and associated software (collectively, "APIs"). By accessing or using our APIs, you are agreeing to the terms below. If there is a conflict between these terms and additional terms applicable to a given API, the additional terms will control for that conflict. Collectively, we refer to the terms below, any additional terms, terms within the accompanying API documentation, and any applicable policies and guidelines as the "Terms." You agree to comply with the Terms and that the Terms control your relationship with us. So please read all the Terms carefully. If you use the APIs as an interface to, or in conjunction with other Google products or services, then the terms for those other products or services also apply.',),
+                )
+              ]))
             ],
           ),
-          SliverList(delegate: SliverChildListDelegate([
-            Padding(
-              padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
-              child: Text('Four Things Every Man Needs To Know',style: Theme.of(context).textTheme.headline4!.apply(color: Colors.black),),
-            ),
-            Row(
-              children: [
-                Assets.img.stories.story1.image(width: 48,height: 48,fit: BoxFit.cover),
-                Expanded(child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start  ,
-                  children: [
-                    Text('Elias Rostami',style: Theme.of(context).textTheme.bodyText1,),
-                    const SizedBox(height: 4,),
-                    Text('2m ago')
-                  ],
-                )),
-
-              ],
-            )
-          ]))
+          Positioned(
+            bottom: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 111,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.center,
+                  colors: [
+                    Colors.white,
+                    Colors.white.withOpacity(0.1)
+                ])
+              ),
+            ))
         ],
       ),
     );
@@ -884,5 +926,149 @@ class Article extends StatelessWidget{
   void showSnackBar(BuildContext context,String message){
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+}
+
+class Profile extends StatelessWidget{
+
+  @override
+  Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+    final posts = AppDatabase.posts;
+    return Scaffold(
+      backgroundColor: Colors.grey.shade900.withOpacity(0.1)  ,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            AppBar(
+              title: const Text('Profile'),
+              actions: [
+                IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.ellipsis_vertical)),
+                const SizedBox(width: 16,)
+              ],
+            ),
+            Stack(
+              children: [
+                Container(
+                  margin: const EdgeInsets.fromLTRB(32, 16, 32, 32),
+                  decoration: BoxDecoration(
+                    color: themeData.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Assets.img.stories.story5.image(width: 68  )
+                            ),
+                            const SizedBox(width: 16,),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('@erst'),
+                                  Text('Elias Rostami',style: themeData.textTheme.bodyText1,),
+                                  Text('Web Developer',style: themeData.textTheme.bodyText2!.apply(color: themeData.colorScheme.primary),),
+                                ],
+                              )
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+                        child: Text('About me',style: themeData.textTheme.headline6,),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 0, 32, 64),
+                        child: Text('i am erst the best programmer in the word',style: themeData.textTheme.bodyText1,),
+                      )
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 64,
+                  left: 64,
+                  child: Container(
+                    height: 68,
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(12)
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('52',style: themeData.textTheme.headline5!.apply(color: themeData.colorScheme.onPrimary),),
+                              Text('Post',style: themeData.textTheme.bodyText1!.apply(color: themeData.colorScheme.onPrimary),),
+                            ],
+                          )
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('52',style: themeData.textTheme.headline5!.apply(color: themeData.colorScheme.onPrimary),),
+                              Text('Post',style: themeData.textTheme.bodyText1!.apply(color: themeData.colorScheme.onPrimary),),
+                            ],
+                          )
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('52',style: themeData.textTheme.headline5!.apply(color: themeData.colorScheme.onPrimary),),
+                              Text('Post',style: themeData.textTheme.bodyText1!.apply(color: themeData.colorScheme.onPrimary),),
+                            ],
+                          )
+                        ),
+                      ],
+                    ),
+                  )
+                )
+              ],
+            ),
+            const SizedBox(height: 32,),
+            Container(
+              decoration:  BoxDecoration(
+                color: themeData.colorScheme.surface,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32)
+                )
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                    child: Row(
+                      children: [
+                        Expanded(child: Text('My Posts',style: themeData.textTheme.headline6,)),
+                        IconButton(onPressed: (){}, icon: Assets.img.icons.grid.svg()), 
+                        IconButton(onPressed: (){}, icon: Assets.img.icons.table.svg()), 
+                      ],
+                    ),
+                  ),
+                  for(int i=0; i<posts.length; i++)ShowPost(post: posts[i]),
+                  const SizedBox(height: 32,)
+                ],
+              ),
+            )
+          ],
+        )
+      ),
+    );
   }
 }
