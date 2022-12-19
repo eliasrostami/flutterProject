@@ -7,6 +7,7 @@ import 'package:flutter_application_train/article.dart';
 import 'package:flutter_application_train/auth.dart';
 import 'package:flutter_application_train/gen/fonts.gen.dart';
 import 'package:flutter_application_train/home.dart';
+import 'package:flutter_application_train/profile.dart';
 import 'package:flutter_application_train/splash.dart';
 import 'package:flutter_application_train/test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,7 +55,7 @@ class _MyAppState extends State<MyApp> {
       theme: MyAppThemeConfig.light().getTheme(_locale.languageCode),
       // theme: themeMode == ThemeMode.dark? MyAppThemeConfig.dark().getTheme(_locale.languageCode):MyAppThemeConfig.light().getTheme(_locale.languageCode),
 
-      home:  Elias()
+      home:  ProfileScreen()
       // Stack(
       //   children: [
       //     Positioned.fill(child: HomeScreen()),

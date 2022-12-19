@@ -846,37 +846,79 @@ class Article extends StatelessWidget{
         ),
         
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            title: const Text('papiloo'),
-            actions: [
-              IconButton(onPressed: (() {
-                
-              }), icon: const Icon(CupertinoIcons.ellipsis_vertical)),
-              const SizedBox(width: 16,)
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                title: const Text('papiloo'),
+                actions: [
+                  IconButton(onPressed: (() {
+                    
+                  }), icon: const Icon(CupertinoIcons.ellipsis_vertical)),
+                  const SizedBox(width: 16,)
+                ],
+              ),
+              SliverList(delegate: SliverChildListDelegate([
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                  child: Text('Four Things Every Man Needs To Know',style: Theme.of(context).textTheme.headline4!.apply(color: Colors.black),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Assets.img.stories.story5.image(width: 48,height: 48,fit: BoxFit.cover)
+                      ),
+                      const SizedBox(width: 16,),
+                      Expanded(child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start  ,
+                        children: [
+                          Text('Elias Rostami',style: Theme.of(context).textTheme.bodyText1,),
+                          const SizedBox(height: 4,),
+                          Text('2m ago')
+                        ],
+                      )),
+                      IconButton(onPressed: (){}, icon:  Icon(CupertinoIcons.bookmark,color: Theme.of(context).colorScheme.primary,)),
+                      IconButton(onPressed: (){}, icon:  Icon(CupertinoIcons.share,color: Theme.of(context).colorScheme.primary,)),
+                    ],
+                  ),
+                ),
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32)
+                  ),
+                  child: Assets.img.posts.large.largePost4.image()
+                ),
+                Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 32, 32, 16),
+                        child: Text('Four Things Every Woman Needs To Know',style: Theme.of(context).textTheme.headline5,),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(32, 0, 32, 32),
+                        child: Text('Thank you for using Googles APIs, other developer services, and associated software (collectively, "APIs"). By accessing or using our APIs, you are agreeing to the terms below. If there is a conflict between these terms and additional terms applicable to a given API, the additional terms will control for that conflict. Collectively, we refer to the terms below, any additional terms, terms within the accompanying API documentation, and any applicable policies and guidelines as the "Terms." You agree to comply with the Terms and that the Terms control your relationship with us. So please read all the Terms carefully. If you use the APIs as an interface to, or in conjunction with other Google products or services, then the terms for those other products or services also apply.',),
+                )
+              ]))
             ],
           ),
-          SliverList(delegate: SliverChildListDelegate([
-            Padding(
-              padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
-              child: Text('Four Things Every Man Needs To Know',style: Theme.of(context).textTheme.headline4!.apply(color: Colors.black),),
-            ),
-            Row(
-              children: [
-                Assets.img.stories.story1.image(width: 48,height: 48,fit: BoxFit.cover),
-                Expanded(child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start  ,
-                  children: [
-                    Text('Elias Rostami',style: Theme.of(context).textTheme.bodyText1,),
-                    const SizedBox(height: 4,),
-                    Text('2m ago')
-                  ],
-                )),
-
-              ],
-            )
-          ]))
+          Positioned(
+            bottom: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 111,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.center,
+                  colors: [
+                    Colors.white,
+                    Colors.white.withOpacity(0.1)
+                ])
+              ),
+            ))
         ],
       ),
     );
