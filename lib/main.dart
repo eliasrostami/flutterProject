@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
       theme: MyAppThemeConfig.light().getTheme(_locale.languageCode),
       // theme: themeMode == ThemeMode.dark? MyAppThemeConfig.dark().getTheme(_locale.languageCode):MyAppThemeConfig.light().getTheme(_locale.languageCode),
 
-      home:  ProfileScreen()
+      home:  Elias()
       // Stack(
       //   children: [
       //     Positioned.fill(child: HomeScreen()),

@@ -23,7 +23,7 @@ class Elias extends StatelessWidget{
     //   ],
     // );
 
-    return Article();
+    return Profile();
   }
 }
 
@@ -926,5 +926,149 @@ class Article extends StatelessWidget{
   void showSnackBar(BuildContext context,String message){
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+}
+
+class Profile extends StatelessWidget{
+
+  @override
+  Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+    final posts = AppDatabase.posts;
+    return Scaffold(
+      backgroundColor: Colors.grey.shade900.withOpacity(0.1)  ,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            AppBar(
+              title: const Text('Profile'),
+              actions: [
+                IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.ellipsis_vertical)),
+                const SizedBox(width: 16,)
+              ],
+            ),
+            Stack(
+              children: [
+                Container(
+                  margin: const EdgeInsets.fromLTRB(32, 16, 32, 32),
+                  decoration: BoxDecoration(
+                    color: themeData.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Assets.img.stories.story5.image(width: 68  )
+                            ),
+                            const SizedBox(width: 16,),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('@erst'),
+                                  Text('Elias Rostami',style: themeData.textTheme.bodyText1,),
+                                  Text('Web Developer',style: themeData.textTheme.bodyText2!.apply(color: themeData.colorScheme.primary),),
+                                ],
+                              )
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+                        child: Text('About me',style: themeData.textTheme.headline6,),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 0, 32, 64),
+                        child: Text('i am erst the best programmer in the word',style: themeData.textTheme.bodyText1,),
+                      )
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 64,
+                  left: 64,
+                  child: Container(
+                    height: 68,
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(12)
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('52',style: themeData.textTheme.headline5!.apply(color: themeData.colorScheme.onPrimary),),
+                              Text('Post',style: themeData.textTheme.bodyText1!.apply(color: themeData.colorScheme.onPrimary),),
+                            ],
+                          )
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('52',style: themeData.textTheme.headline5!.apply(color: themeData.colorScheme.onPrimary),),
+                              Text('Post',style: themeData.textTheme.bodyText1!.apply(color: themeData.colorScheme.onPrimary),),
+                            ],
+                          )
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('52',style: themeData.textTheme.headline5!.apply(color: themeData.colorScheme.onPrimary),),
+                              Text('Post',style: themeData.textTheme.bodyText1!.apply(color: themeData.colorScheme.onPrimary),),
+                            ],
+                          )
+                        ),
+                      ],
+                    ),
+                  )
+                )
+              ],
+            ),
+            const SizedBox(height: 32,),
+            Container(
+              decoration:  BoxDecoration(
+                color: themeData.colorScheme.surface,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32)
+                )
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                    child: Row(
+                      children: [
+                        Expanded(child: Text('My Posts',style: themeData.textTheme.headline6,)),
+                        IconButton(onPressed: (){}, icon: Assets.img.icons.grid.svg()), 
+                        IconButton(onPressed: (){}, icon: Assets.img.icons.table.svg()), 
+                      ],
+                    ),
+                  ),
+                  for(int i=0; i<posts.length; i++)ShowPost(post: posts[i]),
+                  const SizedBox(height: 32,)
+                ],
+              ),
+            )
+          ],
+        )
+      ),
+    );
   }
 }
