@@ -36,7 +36,7 @@ class MyApp extends StatefulWidget{
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode themeMode = ThemeMode.light;
+  ThemeMode themeMode = ThemeMode.dark;
   Locale _locale = Locale('en');
   // Locale _locale = Locale('en');
   @override
@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
       theme: MyAppThemeConfig.light().getTheme(_locale.languageCode),
       // theme: themeMode == ThemeMode.dark? MyAppThemeConfig.dark().getTheme(_locale.languageCode):MyAppThemeConfig.light().getTheme(_locale.languageCode),
 
-      home:  Elias()
+      home:  MainScreen()
       // Stack(
       //   children: [
       //     Positioned.fill(child: HomeScreen()),
@@ -63,9 +63,9 @@ class _MyAppState extends State<MyApp> {
       //   ],
       // ),
       // home: HomePage(toggleThemMode:(){
-      //   setState(() {
-      //     themeMode == ThemeMode.dark? themeMode = ThemeMode.light: themeMode = ThemeMode.dark;
-      //   });
+        // setState(() {
+        //   themeMode == ThemeMode.dark? themeMode = ThemeMode.light: themeMode = ThemeMode.dark;
+        // });
       // },
       // toggleLanguage: (Language newlanguage) {
       //   setState(() {
@@ -166,6 +166,161 @@ class MyAppThemeConfig{
     button: const TextStyle(fontFamily: FontFamily.iranYekan),
   );
 }
+
+const homeIndex = 0;
+const articleIndex = 1;
+const homePageIndex = 2;
+const menuIndex = 3;
+const double bottomNavigationBarHeight=65;
+
+class MainScreen extends StatefulWidget{
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int selectedScreenIndex = homeIndex;
+  final List<int> _history = [];
+
+  ThemeMode themeMode = ThemeMode.dark;
+  Locale _locale = Locale('en');
+
+  // we can set a key to our widget and then access to states in widget
+  GlobalKey<NavigatorState> _homeKey = GlobalKey();
+  GlobalKey<NavigatorState> _articleKey = GlobalKey();
+  GlobalKey<NavigatorState> _homePageKey = GlobalKey();
+  GlobalKey<NavigatorState> _profileKey = GlobalKey();
+
+  late final map = {
+    homeIndex: _homeKey,
+    articleIndex: _articleKey,
+    homePageIndex: _homePageKey,
+    menuIndex: _profileKey
+  };
+
+  Future<bool> _onWillPop() async{
+    final NavigatorState currentSelectedTabNavigatorState=map[selectedScreenIndex]!.currentState!;
+    if(currentSelectedTabNavigatorState.canPop()){
+      currentSelectedTabNavigatorState.pop();
+      return false;
+    }else if(_history.isNotEmpty){
+      setState(() {
+        selectedScreenIndex = _history.last;
+        _history.removeLast();
+      });
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
+    return WillPopScope( //this widget when get false: user click back bottom that does not work
+      onWillPop: _onWillPop,
+      child: Scaffold(        
+        body: Stack(
+          children: [
+            Positioned.fill(
+              bottom: bottomNavigationBarHeight,
+              child: IndexedStack(
+                index: selectedScreenIndex,
+                children: [
+                  // HomeScreen(),
+                  // ArticleScreen(),
+                  // HomePage(toggleThemMode: () {
+                  //   setState(() {
+                  //     themeMode == ThemeMode.dark? themeMode = ThemeMode.light: themeMode = ThemeMode.dark;
+                  //   });
+                  // }, toggleLanguage: (Language newlanguage){
+                  //   setState(() {
+                  //     _locale = newlanguage == Language.en?Locale('en'):Locale('fa');
+                  //   });             
+                  // }),
+                  // ProfileScreen(),
+                  // har kodam az navigator ha yek stack joda dashte bashand
+                  _navigator(_homeKey,homeIndex,HomeScreen()),
+                  _navigator(_articleKey,articleIndex,ArticleScreen()),
+                  _navigator(_homePageKey,homePageIndex,HomePage(toggleThemMode: () {
+                      setState(() {
+                        themeMode == ThemeMode.dark? themeMode = ThemeMode.light: themeMode = ThemeMode.dark;
+                      });
+                    }, toggleLanguage: (Language newlanguage){
+                      setState(() {
+                        _locale = newlanguage == Language.en?Locale('en'):Locale('fa');
+                      });             
+                    }),),
+                  _navigator(_profileKey,menuIndex,ProfileScreen())
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child:  _BottomNavigation(onTap: (index) {
+                         setState(() {
+                             _history.remove(selectedScreenIndex);//first if exist same this function remove it
+                             _history.add(selectedScreenIndex);
+                             selectedScreenIndex = index;
+                            });
+                           },
+                          selectedIndex: selectedScreenIndex,
+                       ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _navigator(GlobalKey key,int index,Widget child) {
+    return key.currentState==null && selectedScreenIndex!=index? Container(): Navigator(
+      key: key,
+      onGenerateRoute: (settings) => MaterialPageRoute(
+        builder: ((context) => Offstage(
+          offstage: selectedScreenIndex!=index, 
+          child: child))),);
+  }
+}
+
+// this code for simple bottom navigation
+// class _MainScreenState extends State<MainScreen> {
+//   int selectedScreenIndex = homeIndex;
+//   ThemeMode themeMode = ThemeMode.dark;
+//   Locale _locale = Locale('en');
+//   @override
+//   Widget build(BuildContext context) {
+    
+//     return Scaffold(
+//       bottomNavigationBar: _BottomNavigation(onTap: (index) {
+//         setState(() {
+//           selectedScreenIndex = index;
+//         });
+//       },
+//       selectedIndex: selectedScreenIndex,
+//       ),
+//       body: IndexedStack(
+//         index: selectedScreenIndex,
+//         children: [
+//           HomeScreen(),
+//           ArticleScreen(),
+//           HomePage(toggleThemMode: () {
+//             setState(() {
+//               themeMode == ThemeMode.dark? themeMode = ThemeMode.light: themeMode = ThemeMode.dark;
+//             });
+//           }, toggleLanguage: (Language newlanguage){
+//             setState(() {
+//               _locale = newlanguage == Language.en?Locale('en'):Locale('fa');
+//             });             
+//           }),
+//           ProfileScreen(),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class HomePage extends StatefulWidget{
 
@@ -286,7 +441,6 @@ class _HomePageState extends State<HomePage> {
 
               ),
             ),
-            
             Padding(
               padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
               child: Row(
@@ -310,7 +464,6 @@ class _HomePageState extends State<HomePage> {
                         if (value != null) updateLanguage(value);
                       })
                 ],
-
               ),
             ),
             const Divider(),
@@ -387,7 +540,6 @@ class _HomePageState extends State<HomePage> {
 }
 
 class Skill extends StatelessWidget {
-
   final SkillType type;
   final String title;
   final String imagePth;
@@ -401,11 +553,8 @@ class Skill extends StatelessWidget {
     required this.imagePth,
     required this.shadowColor,
     required this.isActive,
-    required this.onTap
-    
+    required this.onTap 
   }) : super(key: key);
-
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -440,14 +589,15 @@ class Skill extends StatelessWidget {
 }
 
 class _BottomNavigation extends StatelessWidget{
+  final Function(int index) onTap;
+  final int selectedIndex;
+
+  const _BottomNavigation({super.key, required this.onTap, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
-      
       height: 85,
-
       child: Stack(
         children: [
           Positioned(
@@ -461,18 +611,34 @@ class _BottomNavigation extends StatelessWidget{
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 20,
-                    color: Color(0xff9b8487).withOpacity(0.3)
+                    color: const Color(0xff9b8487).withOpacity(0.3)
                   )
                 ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _BottomNavigationItem(title: 'Home', iconFileName: 'Home.png', activeIconFileName: 'Home.png'),
-                  _BottomNavigationItem(title: 'Articles', iconFileName: 'Articles.png', activeIconFileName: 'Articles.png'),
-                  const SizedBox(width: 8,),
-                  _BottomNavigationItem(title: 'Search', iconFileName: 'Search.png', activeIconFileName: 'Search.png'),
-                  _BottomNavigationItem(title: 'Menu', iconFileName: 'Menu.png', activeIconFileName: 'Menu.png'),
+                  _BottomNavigationItem(title: 'Home', iconFileName: 'Home.png', activeIconFileName: 'Homeactive.png',onTap: (() {
+                    onTap(homeIndex);                    
+                  }),
+                  isActive: selectedIndex==homeIndex,
+                  ),
+                  _BottomNavigationItem(title: 'Articles', iconFileName: 'Articles.png', activeIconFileName: 'Articlesactive.png',onTap: () {
+                    onTap(articleIndex);
+                  },
+                  isActive: selectedIndex==articleIndex,
+                  ),
+                  Expanded(child: Container()),
+                  _BottomNavigationItem(title: 'Search', iconFileName: 'Search.png', activeIconFileName: 'Searchactive.png',onTap: () {
+                    onTap(homePageIndex);                    
+                  },
+                  isActive: selectedIndex==homePageIndex,
+                  ),
+                  _BottomNavigationItem(title: 'Menu', iconFileName: 'Menu.png', activeIconFileName: 'Menuactive.png',onTap: () {
+                    onTap(menuIndex);
+                  },
+                  isActive: selectedIndex==menuIndex,
+                  ),
                 ],
               ),
             )),
@@ -482,7 +648,7 @@ class _BottomNavigation extends StatelessWidget{
                 height: 85,
                 alignment: Alignment.topCenter,
                 child: Container(
-                  height: 65,
+                  height: bottomNavigationBarHeight,
                   decoration: BoxDecoration(
                     color: const Color(0xff376AED),
                     borderRadius: BorderRadius.circular(32.5),
@@ -494,41 +660,39 @@ class _BottomNavigation extends StatelessWidget{
             )
         ],
       ),
-
-      
-
     );
   }
 }
 
 class _BottomNavigationItem extends StatelessWidget{
-
   final String title;
   final String iconFileName;
   final String activeIconFileName;
-
+  final bool isActive;
+  final Function() onTap;
   _BottomNavigationItem({
-
     Key? key,
     required this.title,
     required this.iconFileName,
-    required this.activeIconFileName
-
+    required this.activeIconFileName,
+    required this.onTap, 
+    required this.isActive
   }): super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    
-    return Column(
-      
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-
-        Image.asset('assets/img/icons/$iconFileName'),
-        const SizedBox(width: 4,),
-        Text(title,style: Theme.of(context).textTheme.caption,)
-
-      ],
+    final ThemeData themeData= Theme.of(context);
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/img/icons/${isActive?activeIconFileName:iconFileName}',width: 24,height: 24,),
+            const SizedBox(width: 4,),
+            Text(title,style: Theme.of(context).textTheme.caption!.apply(color: isActive?themeData.colorScheme.primary:themeData.textTheme.caption! .color),),
+          ],
+        ),
+      ),
     );
   }
 
@@ -545,3 +709,6 @@ enum SkillType {
   afterEffect,
   lightRoom,
 }
+
+
+// offstage use for prevent to paint a widget when it does'nt show for user
